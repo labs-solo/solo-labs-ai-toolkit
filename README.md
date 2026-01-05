@@ -1,6 +1,9 @@
 # Solo Labs AI Toolkit
 
-Domain-focused Claude Code agents and slash commands for building the AEGIS protocol (Uniswap v4), plus a one-command installer.
+Claude Code agents and slash commands for software development, with specialized tools for the AEGIS protocol (Uniswap v4).
+
+**Works with any project** — core tools like `/explore`, `/plan`, `/review-pr`, and `/gen-tests` are general-purpose.
+**AEGIS specialists included** — domain experts for L-unit accounting, collateral math, vault flows, and protocol invariants.
 
 ## Quick Start
 
@@ -26,6 +29,40 @@ Installs into `./.claude` in your current repo.
 npx @solo-labs/ai-toolkit-nx-claude init --installMode=custom --installationType=local
 ```
 
+## What This Tool Does NOT Do
+
+- Does NOT modify your `package.json` or add dependencies
+- Does NOT change your git configuration or commit history
+- Does NOT create `.env` files or touch your credentials
+- Does NOT modify any existing project files
+- Does NOT phone home or collect telemetry
+- Only writes to the `.claude/` directory (nothing else)
+
+## Security & Privacy
+
+- **No network calls**: Agents run locally within Claude Code
+- **No telemetry**: We don't collect any usage data
+- **No secrets access**: Agents can't read `.env` or credential files
+- **Read-only by default**: Agents suggest changes; you approve them
+- **Open source**: All agent and command code is visible in this repo
+
+## How It Works With Claude Code
+
+This toolkit adds **custom agents and slash commands** to Claude Code:
+
+1. Claude Code reads from `~/.claude/` (global) or `./.claude/` (local)
+2. Our installer copies specialized markdown files there
+3. Claude Code automatically picks them up — no restart needed
+4. We're not modifying Claude Code itself — just adding content it's designed to load
+
+## Browse Before Installing
+
+Want to inspect the agents and commands before installing?
+
+- [View all agents](packages/agents/)
+- [View all commands](packages/commands/)
+- [View protocol knowledge docs](packages/agents/protocol-knowledge/src/)
+
 ## What Gets Installed
 
 The installer copies Markdown files into your Claude config directory:
@@ -37,14 +74,16 @@ The installer copies Markdown files into your Claude config directory:
   manifest.json
 ```
 
+**About `manifest.json`**: This file tracks your installation for future upgrade/uninstall support. Do not edit it manually — the installer manages it. Safe to delete if you want to start fresh.
+
 Safety model:
 
 - Re-running `init` does not overwrite existing files unless you pass `--force`.
 - `--dry` shows what would be installed without writing anything.
 
-## Uninstalling
+## Easy Removal
 
-To completely remove the toolkit:
+Don't like the toolkit? Remove it completely in 10 seconds:
 
 ```bash
 # Global installation
@@ -54,7 +93,9 @@ rm -rf ~/.claude/agents ~/.claude/commands ~/.claude/manifest.json
 rm -rf ./.claude/agents ./.claude/commands ./.claude/manifest.json
 ```
 
-To remove only specific components, delete individual files from `agents/` or `commands/` and update `manifest.json` accordingly.
+That's it. No config files scattered elsewhere, no dependencies to clean up, no residue.
+
+To remove only specific components, delete individual files from `agents/` or `commands/`.
 
 > **Note:** An `uninstall` command is planned for a future release.
 
@@ -70,19 +111,19 @@ This is an Nx monorepo with content packages (Markdown) and an installer:
 - `packages/agents/protocol-knowledge/` — AEGIS reference docs (15) used as embedded knowledge
 - `packages/ai-toolkit-nx-claude/` — installer (Nx generator + standalone CLI)
 
-## Start Here (Essential Commands)
+## Start With These 5 Commands
 
-New to the toolkit? Start with these 5 commands:
+New to the toolkit? Master these first:
 
-| Command | When to Use |
-|---------|-------------|
-| `/explore <area>` | Understand any part of the codebase before making changes |
-| `/plan <task>` | Create a step-by-step implementation plan for any feature or fix |
-| `/validate-invariants` | Check your changes against AEGIS safety rules |
-| `/gen-foundry-tests` | Generate comprehensive Foundry tests for your contracts |
-| `/review-pr` | Get AI review of a pull request before merging |
+| Command | What It Does |
+|---------|--------------|
+| `/explore <area>` | Understand any codebase area before making changes |
+| `/plan <task>` | Create step-by-step implementation plans |
+| `/validate-invariants` | Check changes against AEGIS safety rules |
+| `/gen-foundry-tests` | Generate comprehensive Foundry tests |
+| `/review-pr` | AI review of pull requests before merging |
 
-Once comfortable, explore the full command list below.
+The toolkit includes 33 commands and 34 agents total. Start with these 5, then explore more as needed.
 
 ## Recommended Daily Workflows
 

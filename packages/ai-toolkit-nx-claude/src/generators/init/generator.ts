@@ -296,8 +296,13 @@ export async function initGenerator(tree: Tree, options: InitGeneratorSchema) {
     const agentCount = (normalizedOptions.agents || []).length;
 
     logger.info('');
-    logger.warn(`⚠️  This will install ${commandCount} commands and ${agentCount} agents to ~/.claude (global)`);
-    logger.info('   These will be available to Claude Code in ALL projects.');
+    logger.info(`📍 Installing to ~/.claude (global - available in all projects)`);
+    logger.info('');
+    logger.info(`   ✓ Tiny footprint (~650KB of markdown files)`);
+    logger.info(`   ✓ Easy to remove: rm -rf ~/.claude/{agents,commands,manifest.json}`);
+    logger.info(`   ✓ Won't touch any project files or dependencies`);
+    logger.info('');
+    logger.info(`   ${commandCount} commands and ${agentCount} agents will be installed.`);
     logger.info('');
 
     const { confirmed } = await prompt<{ confirmed: boolean }>({
@@ -458,7 +463,6 @@ export async function initGenerator(tree: Tree, options: InitGeneratorSchema) {
 
   logger.info('✅ Solo Labs Claude Code configuration installed successfully!');
   logger.info(`📁 Location: ${targetDir}`);
-  logger.info(`📝 Use these in Claude Code immediately`);
 
   // Final summary
   logger.info('\n✨ Installation complete!');
@@ -468,6 +472,13 @@ export async function initGenerator(tree: Tree, options: InitGeneratorSchema) {
   if (installedAgents.length > 0) {
     logger.info(`   Agents: ${installedAgents.join(', ')}`);
   }
+
+  // Post-install success path
+  logger.info('\n🎯 Try it now:');
+  logger.info('   1. Open Claude Code in any project');
+  logger.info('   2. Type: /explore this codebase');
+  logger.info('   3. Watch the magic happen');
+  logger.info('\n📚 Learn more: https://github.com/solo-labs/ai-toolkit#start-with-these-5-commands');
 }
 
 export default initGenerator;
