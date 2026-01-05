@@ -45,7 +45,7 @@ async function main() {
     }
 
     // Use flushChanges to write the tree to disk
-    const { flushChanges, FsTree } = await import('nx/src/generators/tree');
+    const { flushChanges, FsTree } = await import('nx/src/generators/tree.js');
     const tree = new FsTree(process.cwd(), false);
 
     try {

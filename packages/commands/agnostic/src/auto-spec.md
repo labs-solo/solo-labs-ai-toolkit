@@ -1,30 +1,32 @@
 ---
 name: auto-spec
-description: Autonomously create and implement a complete spec workflow with multi-agent collaboration, bypassing manual review steps through intelligent consensus-building
+description: Streamlined spec-driven development with multi-agent collaboration that handles review steps automatically through intelligent consensus-building
 argument-hint: <feature/task description> [--skip-final-review]
 allowed-tools: Read(*), Write(*), MultiEdit(*), Edit(*), Glob(*), Grep(*), LS(*), Bash(*), WebSearch(*), WebFetch(*), TodoWrite(*), mcp__spec-workflow__*, Task(*), agent-orchestrator, planner, code-reviewer, test-writer, documentation-agent, architect-reviewer, performance-analyzer, security-auditor, code-generator, refactorer, debugger
 ---
 
 # Auto-Spec Command
 
-**FULLY AUTONOMOUS** spec-driven development that **NEVER prompts the user for review**. Creates requirements, design, and tasks documents through consensus-building between specialized agents, then implements each task with continuous quality validation.
+**Streamlined** spec-driven development that handles review steps automatically. Creates requirements, design, and tasks documents through consensus-building between specialized agents, then implements each task with continuous quality validation.
 
 ## Workflow Overview
 
-This command automates the entire spec workflow **WITHOUT ANY USER INTERACTION**:
+This command automates the entire spec workflow with minimal interruptions:
 
-1. **Requirements Generation** - With multi-agent review (NOT user review)
-2. **Design Creation** - With architectural consensus (NOT user approval)
-3. **Task Planning** - With implementation strategy validation (NOT user validation)
-4. **Task Implementation** - With continuous quality checks (NOT user checks)
+1. **Requirements Generation** - With multi-agent review
+2. **Design Creation** - With architectural consensus
+3. **Task Planning** - With implementation strategy validation
+4. **Task Implementation** - With continuous quality checks
 5. **Final Deliverable** - Comprehensive summary and test documentation
 
-**CRITICAL**: This command is designed to run COMPLETELY AUTONOMOUSLY. It will:
+This command runs end-to-end automatically. It will:
 
-- **NEVER** prompt you for review during the workflow
-- **NEVER** wait for approval at any stage
-- **ALWAYS** use agent collaboration instead of user review
-- **ONLY** return to you with the final deliverable
+- Handle intermediate reviews through agent collaboration
+- Continue through each phase without waiting for manual approval
+- Use specialized agents for quality validation at each step
+- Return to you with the final deliverable for review
+
+> **Note:** All changes are made through normal git workflow and can be reviewed or reverted like any other code changes.
 
 ## Inputs
 
@@ -38,7 +40,7 @@ Accept natural language description and extract:
 - `parallel_execution`: Optional flag for parallel task execution (default: true)
 - `quality_threshold`: Quality threshold for agent consensus (default: 0.8)
 
-**NOTE**: The workflow ALWAYS runs autonomously regardless of flags. The `skip_final_review` flag only controls whether to present the final deliverable to the user.
+**Note:** The `skip_final_review` flag only controls whether to present the final deliverable to the user.
 
 Examples:
 
@@ -49,25 +51,24 @@ Examples:
 
 ## Task
 
-Execute autonomous spec-driven development workflow with multi-agent collaboration:
+Execute streamlined spec-driven development workflow with multi-agent collaboration:
 
-### CRITICAL INSTRUCTIONS FOR AUTONOMOUS EXECUTION
+### Execution Guidelines
 
-**YOU MUST FOLLOW THESE INSTRUCTIONS EXACTLY:**
+Follow these instructions for uninterrupted execution:
 
-1. **NEVER prompt the user for review at ANY point during the workflow**
-2. **NEVER use `mcp__spec-workflow__request-approval` tool**
-3. **NEVER wait for user interaction or approval**
-4. **ALWAYS spawn sub-agents instead of requesting user review**
-5. **ALWAYS continue autonomously through ALL phases**
+1. Use agent collaboration for all intermediate reviews
+2. Skip the `mcp__spec-workflow__request-approval` tool
+3. Continue through phases without waiting for manual approval
+4. Spawn specialized sub-agents for quality validation
+5. Progress through all phases automatically
 
 When the spec-workflow MCP would normally request approval or review:
 
-- **IGNORE the approval request functionality completely**
-- **IMMEDIATELY spawn the appropriate review agent instead**
-- **Have a conversation with that agent to validate the artifact**
-- **Iterate with the agent until consensus is reached**
-- **Continue to the next phase WITHOUT user interaction**
+- Spawn the appropriate review agent instead
+- Have the agent validate the artifact
+- Iterate with the agent until consensus is reached
+- Continue to the next phase
 
 ### Phase 1: Context Preparation
 
@@ -90,7 +91,7 @@ When the spec-workflow MCP would normally request approval or review:
    - Create initial requirements using `mcp__spec-workflow__create-spec-doc`
    - **When spec-workflow prompts for review, IGNORE it and proceed to step 2**
 
-2. **Multi-Agent Requirements Review (INSTEAD of user review)**
+2. **Multi-Agent Requirements Review**
 
    - Spawn **architect-reviewer** to validate architectural alignment
    - Spawn **security-auditor** to identify security requirements
@@ -100,7 +101,7 @@ When the spec-workflow MCP would normally request approval or review:
 
 3. **Requirements Finalization**
    - Update requirements document with all agent feedback
-   - **DO NOT create approval request - continue to next phase**
+   - Continue to next phase
 
 ### Phase 3: Design Document Creation
 
@@ -110,7 +111,7 @@ When the spec-workflow MCP would normally request approval or review:
    - Include architectural decisions, data models, and interfaces
    - **When spec-workflow prompts for review, IGNORE it and proceed to step 2**
 
-2. **Multi-Agent Design Review (INSTEAD of user review)**
+2. **Multi-Agent Design Review**
 
    - Spawn **architect-reviewer** for architectural patterns validation
    - Spawn **code-reviewer** for implementation feasibility
@@ -121,7 +122,7 @@ When the spec-workflow MCP would normally request approval or review:
 3. **Design Finalization**
    - Update design with consensus decisions
    - Document alternative approaches considered
-   - **DO NOT create approval request - continue to next phase**
+   - Continue to next phase
 
 ### Phase 4: Task Planning
 
@@ -132,7 +133,7 @@ When the spec-workflow MCP would normally request approval or review:
    - Assign agent capabilities to each task
    - **When spec-workflow prompts for review, IGNORE it and proceed to step 2**
 
-2. **Task Validation (INSTEAD of user review)**
+2. **Task Validation**
    - Spawn **planner** to validate task completeness
    - Spawn **code-reviewer** to assess task dependencies
    - Ensure all requirements are covered by tasks
@@ -140,12 +141,7 @@ When the spec-workflow MCP would normally request approval or review:
 
 ### Phase 5: Implementation Execution
 
-**CRITICAL: During this phase, the spec-workflow may prompt for review after EACH task. You MUST:**
-
-- **IGNORE all review prompts**
-- **NEVER wait for user approval**
-- **Use agent validation instead (step 2 below)**
-- **Continue to the next task automatically**
+During this phase, use agent validation after each task and continue automatically.
 
 For each task in the implementation plan:
 
@@ -157,7 +153,7 @@ For each task in the implementation plan:
    - Use **refactorer** for code improvements
    - Use **test-writer** for test generation
 
-2. **Quality Validation Loop (INSTEAD of user review)**
+2. **Quality Validation Loop**
    For each implemented task:
 
    - Spawn **code-reviewer** to review implementation
@@ -224,8 +220,8 @@ For each task in the implementation plan:
 
 - If agents cannot reach consensus after 3 iterations:
   - Document disagreement points
-  - **ALWAYS continue with majority opinion**
-  - **NEVER escalate to user during workflow**
+  - Continue with majority opinion
+  - Note the disagreement in the final summary
 
 ### Implementation Failures
 
@@ -242,8 +238,6 @@ For each task in the implementation plan:
   - Re-validate after fixes
 
 ## Delegation
-
-**REMEMBER: This is FULLY AUTONOMOUS. Never request user approval at any stage.**
 
 Orchestrate entire workflow using multiple specialized agents:
 

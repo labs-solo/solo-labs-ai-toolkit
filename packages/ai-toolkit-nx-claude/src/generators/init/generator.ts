@@ -3,6 +3,7 @@ import { formatFiles, logger, writeJson } from '@nx/devkit';
 import * as path from 'path';
 import * as fs from 'fs';
 import * as os from 'os';
+import { prompt } from 'enquirer';
 import type { InitGeneratorSchema } from './schema';
 import { promptForMissingOptions } from '../../utils/prompt-utils';
 
@@ -196,7 +197,8 @@ export async function initGenerator(tree: Tree, options: InitGeneratorSchema) {
   const localExistingAgents = checkExistingFiles(localDir, 'agents', availableAgents);
 
   // Handle prompting via schema-driven system
-  const schemaPath = path.join(__dirname, 'schema.json');
+  // When bundled, __dirname points to dist root, so schema is in generators/init/
+  const schemaPath = path.join(__dirname, 'generators', 'init', 'schema.json');
 
   let normalizedOptions;
   try {
@@ -231,14 +233,18 @@ export async function initGenerator(tree: Tree, options: InitGeneratorSchema) {
     logger.info('📦 Default Installation Mode');
     logger.info('   Installing recommended Solo Labs setup with pre-selected components\n');
 
-    normalizedOptions.installationType = 'global';
+    // Only set installationType if not explicitly provided
+    if (!normalizedOptions.installationType) {
+      normalizedOptions.installationType = 'global';
+    }
     normalizedOptions.commands = DEFAULT_COMMANDS.filter((c) => availableCommands.includes(c));
     normalizedOptions.agents = DEFAULT_AGENTS.filter((a) => availableAgents.includes(a));
     normalizedOptions.installCommands = true;
     normalizedOptions.installAgents = true;
     normalizedOptions.dry = false;
 
-    logger.info('📍 Location: Global (~/.claude)');
+    const locationLabel = normalizedOptions.installationType === 'global' ? 'Global (~/.claude)' : 'Local (./.claude)';
+    logger.info(`📍 Location: ${locationLabel}`);
     logger.info(`📝 Commands: ${normalizedOptions.commands.length} pre-selected`);
     logger.info(`🤖 Agents: ${normalizedOptions.agents.length} pre-selected\n`);
   }
@@ -272,6 +278,41 @@ export async function initGenerator(tree: Tree, options: InitGeneratorSchema) {
 
   // Handle dry-run mode
   const isDryRun = normalizedOptions.dry === true;
+
+  // Confirmation prompt for global install (unless --force, --nonInteractive, or --dry)
+  const opts = normalizedOptions as Record<string, unknown>;
+  const isNonInteractive =
+    opts.nonInteractive ||
+    opts['non-interactive'] ||
+    opts['no-interactive'];
+
+  if (
+    isGlobalInstall &&
+    !isDryRun &&
+    !normalizedOptions.force &&
+    !isNonInteractive
+  ) {
+    const commandCount = (normalizedOptions.commands || []).length;
+    const agentCount = (normalizedOptions.agents || []).length;
+
+    logger.info('');
+    logger.warn(`⚠️  This will install ${commandCount} commands and ${agentCount} agents to ~/.claude (global)`);
+    logger.info('   These will be available to Claude Code in ALL projects.');
+    logger.info('');
+
+    const { confirmed } = await prompt<{ confirmed: boolean }>({
+      type: 'confirm',
+      name: 'confirmed',
+      message: 'Proceed with global installation?',
+      initial: false,
+    });
+
+    if (!confirmed) {
+      logger.warn('❌ Installation cancelled.');
+      logger.info('   Tip: Use --installationType=local to install per-project instead.');
+      return;
+    }
+  }
   const forceOverwrite = normalizedOptions.force === true;
   if (isDryRun) {
     logger.info('🔍 DRY RUN MODE - No files will be modified');

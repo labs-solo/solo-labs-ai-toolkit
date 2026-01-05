@@ -51,7 +51,7 @@ export const commands: Commands = {
   },
   'auto-spec': {
     description:
-      'Autonomously create and implement a complete spec workflow with multi-agent collaboration, bypassing manual review steps through intelligent consensus-building',
+      'Streamlined spec-driven development with multi-agent collaboration that handles review steps automatically through intelligent consensus-building',
     filePath: './auto-spec.md',
   },
   'create-pr': {

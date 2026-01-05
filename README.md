@@ -42,7 +42,23 @@ Safety model:
 - Re-running `init` does not overwrite existing files unless you pass `--force`.
 - `--dry` shows what would be installed without writing anything.
 
-## What’s In This Repo
+## Uninstalling
+
+To completely remove the toolkit:
+
+```bash
+# Global installation
+rm -rf ~/.claude/agents ~/.claude/commands ~/.claude/manifest.json
+
+# Local installation (from project root)
+rm -rf ./.claude/agents ./.claude/commands ./.claude/manifest.json
+```
+
+To remove only specific components, delete individual files from `agents/` or `commands/` and update `manifest.json` accordingly.
+
+> **Note:** An `uninstall` command is planned for a future release.
+
+## What's In This Repo
 
 This is an Nx monorepo with content packages (Markdown) and an installer:
 
@@ -53,6 +69,20 @@ This is an Nx monorepo with content packages (Markdown) and an installer:
 - `packages/agents/subgraph/` — subgraph agents (2)
 - `packages/agents/protocol-knowledge/` — AEGIS reference docs (15) used as embedded knowledge
 - `packages/ai-toolkit-nx-claude/` — installer (Nx generator + standalone CLI)
+
+## Start Here (Essential Commands)
+
+New to the toolkit? Start with these 5 commands:
+
+| Command | When to Use |
+|---------|-------------|
+| `/explore <area>` | Understand any part of the codebase before making changes |
+| `/plan <task>` | Create a step-by-step implementation plan for any feature or fix |
+| `/validate-invariants` | Check your changes against AEGIS safety rules |
+| `/gen-foundry-tests` | Generate comprehensive Foundry tests for your contracts |
+| `/review-pr` | Get AI review of a pull request before merging |
+
+Once comfortable, explore the full command list below.
 
 ## Recommended Daily Workflows
 
@@ -96,6 +126,36 @@ Frontend-specific:
 1. Add a doc under `packages/agents/protocol-knowledge/src/{concepts,patterns,gotchas}/`
 2. Export it from `packages/agents/protocol-knowledge/src/index.ts`
 
+## Testing
+
+See [TESTING.md](./TESTING.md) for comprehensive testing instructions.
+
+### Quick Test Commands
+
+```bash
+# Install and build
+bun install
+bun run build
+
+# Test installer (dry run - safe)
+node packages/ai-toolkit-nx-claude/dist/cli-generator.cjs init --dry
+
+# Test local installation (non-interactive)
+node packages/ai-toolkit-nx-claude/dist/cli-generator.cjs init \
+  --installationType=local \
+  --installMode=default \
+  --nonInteractive
+
+# Verify installation
+ls -la .claude/
+ls -1 .claude/agents/*.md | wc -l  # Should show 8-34 agents
+ls -1 .claude/commands/*.md | wc -l  # Should show 9-33 commands
+
+# Test index generators
+npx nx run @solo-labs/agents-agnostic:generate-index
+npx nx run @solo-labs/commands-agnostic:generate-index
+```
+
 ## Repo Development
 
 ```bash
@@ -103,4 +163,21 @@ bun install
 bun run build
 ```
 
-More details and internal notes live in `CLAUDE.md`.
+More details and internal notes live in [CLAUDE.md](./CLAUDE.md).
+
+## Troubleshooting
+
+**Installation Issues:**
+
+- **"Command not found" after install** — Ensure `~/.claude` exists and Claude Code is configured to read from it. Try restarting Claude Code.
+- **Partial installation** — Safe to re-run `init`; existing files are preserved. Use `--force` to overwrite stale files.
+
+**Recovery:**
+
+- **Reset to clean state** — Delete `~/.claude/{agents,commands,manifest.json}` and re-run init.
+- **Conflicts with existing setup** — Use `--installationType=local` to install per-project instead of globally.
+
+**Common Errors:**
+
+- **"Agent/command file not found"** — Re-run the init command to reinstall missing files.
+- **Build failures** — Run `bun install && bun run build` from the repo root. Ensure Node.js 20+ is installed.
