@@ -1,0 +1,48 @@
+{
+  "name": "@solo-labs/commands-frontend",
+  "version": "0.1.0",
+  "private": false,
+  "type": "module",
+  "main": "./dist/src/index.js",
+  "module": "./dist/src/index.js",
+  "types": "./dist/src/index.d.ts",
+  "publishConfig": {
+    "access": "public"
+  },
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "@solo-labs/source": "./src/index.ts",
+      "types": "./dist/src/index.d.ts",
+      "import": "./dist/src/index.js",
+      "default": "./dist/src/index.js"
+    }
+  },
+  "nx": {
+    "tags": ["type:command", "scope:frontend"],
+    "targets": {
+      "generate-index": {
+        "executor": "nx:run-commands",
+        "options": {
+          "command": "npx tsx scripts/generate.ts",
+          "cwd": "packages/commands/frontend"
+        }
+      },
+      "build": {
+        "executor": "@nx/js:tsc",
+        "outputs": ["{options.outputPath}"],
+        "dependsOn": ["generate-index"],
+        "options": {
+          "outputPath": "packages/commands/frontend/dist",
+          "tsConfig": "packages/commands/frontend/tsconfig.lib.json",
+          "packageJson": "packages/commands/frontend/package.json",
+          "main": "packages/commands/frontend/src/index.ts",
+          "assets": ["packages/commands/frontend/src/*.md"]
+        }
+      }
+    }
+  },
+  "dependencies": {
+    "tslib": "^2.3.0"
+  }
+}

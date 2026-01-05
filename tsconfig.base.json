@@ -16,6 +16,20 @@
     "skipLibCheck": true,
     "strict": true,
     "target": "es2022",
-    "customConditions": ["@solo-labs-ai-toolkit/source"]
+    "customConditions": ["@solo-labs/source"],
+    "baseUrl": ".",
+    "paths": {
+      "@solo-labs/utils": ["packages/utils/src/index.ts"],
+      "@solo-labs/agents-agnostic": ["packages/agents/agnostic/src/index.ts"],
+      "@solo-labs/commands-agnostic": [
+        "packages/commands/agnostic/src/index.ts"
+      ],
+      "@solo-labs/protocol-knowledge": [
+        "packages/agents/protocol-knowledge/src/index.ts"
+      ],
+      "@solo-labs/ai-toolkit-nx-claude": [
+        "packages/ai-toolkit-nx-claude/src/index.ts"
+      ]
+    }
   }
 }

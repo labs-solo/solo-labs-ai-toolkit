@@ -1,0 +1,9 @@
+{
+  "generators": {
+    "init": {
+      "factory": "./dist/generators/init/generator",
+      "schema": "./dist/generators/init/schema.json",
+      "description": "Install Solo Labs AI agents and commands for Claude Code"
+    }
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "name": "@solo-labs/protocol-knowledge",
+  "sourceRoot": "packages/agents/protocol-knowledge/src",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "packages/agents/protocol-knowledge/dist",
+        "main": "packages/agents/protocol-knowledge/src/index.ts",
+        "tsConfig": "packages/agents/protocol-knowledge/tsconfig.lib.json",
+        "assets": [
+          {
+            "glob": "**/*.md",
+            "input": "packages/agents/protocol-knowledge/src",
+            "output": "."
+          }
+        ]
+      }
+    }
+  }
+}

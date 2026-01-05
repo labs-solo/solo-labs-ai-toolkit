@@ -1,0 +1,150 @@
+{
+  "name": "@solo-labs/ai-toolkit-nx-claude",
+  "version": "0.1.0",
+  "private": false,
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.cjs",
+  "types": "./dist/index.d.ts",
+  "publishConfig": {
+    "access": "public"
+  },
+  "bin": {
+    "solo-labs-nx-claude": "dist/cli-generator.cjs"
+  },
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "@solo-labs/source": "./src/index.ts",
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.cjs",
+      "default": "./dist/index.cjs"
+    }
+  },
+  "files": [
+    "dist",
+    "!**/*.tsbuildinfo",
+    "generators.json"
+  ],
+  "nx": {
+    "targets": {
+      "bundle": {
+        "executor": "@nx/esbuild:esbuild",
+        "outputs": ["{options.outputPath}"],
+        "dependsOn": ["generate-types"],
+        "options": {
+          "outputPath": "packages/ai-toolkit-nx-claude/dist",
+          "main": "packages/ai-toolkit-nx-claude/src/cli-generator.ts",
+          "additionalEntryPoints": [
+            "packages/ai-toolkit-nx-claude/src/index.ts",
+            "packages/ai-toolkit-nx-claude/src/generators/init/generator.ts"
+          ],
+          "tsConfig": "packages/ai-toolkit-nx-claude/tsconfig.lib.json",
+          "bundle": true,
+          "platform": "node",
+          "format": ["cjs"],
+          "external": [
+            "@nx/devkit",
+            "nx",
+            "nx/package.json",
+            "ts-node",
+            "ts-node/esm",
+            "@swc/wasm",
+            "@swc/core",
+            "@swc/core-*",
+            "@nx/nx-*",
+            "@angular-devkit/*",
+            "rxjs",
+            "rxjs/*",
+            "jiti",
+            "jiti/package.json"
+          ],
+          "generatePackageJson": false,
+          "assets": [
+            {
+              "input": "./packages/ai-toolkit-nx-claude/src",
+              "glob": "**/!(*.ts)",
+              "output": "."
+            },
+            {
+              "input": "./packages/commands/agnostic/src",
+              "glob": "**/*.md",
+              "output": "content/commands/agnostic"
+            },
+            {
+              "input": "./packages/commands/frontend/src",
+              "glob": "**/*.md",
+              "output": "content/commands/frontend"
+            },
+            {
+              "input": "./packages/commands/subgraph/src",
+              "glob": "**/*.md",
+              "output": "content/commands/subgraph"
+            },
+            {
+              "input": "./packages/agents/agnostic/src",
+              "glob": "**/*.md",
+              "output": "content/agents/agnostic"
+            },
+            {
+              "input": "./packages/agents/frontend/src",
+              "glob": "**/*.md",
+              "output": "content/agents/frontend"
+            },
+            {
+              "input": "./packages/agents/subgraph/src",
+              "glob": "**/*.md",
+              "output": "content/agents/subgraph"
+            }
+          ]
+        }
+      },
+      "generate-types": {
+        "executor": "@nx/js:tsc",
+        "outputs": ["{options.outputPath}"],
+        "options": {
+          "outputPath": "packages/ai-toolkit-nx-claude/dist",
+          "tsConfig": "packages/ai-toolkit-nx-claude/tsconfig.types.json",
+          "main": "packages/ai-toolkit-nx-claude/src/index.ts",
+          "assets": []
+        }
+      },
+      "build": {
+        "executor": "nx:run-commands",
+        "outputs": ["{workspaceRoot}/packages/ai-toolkit-nx-claude/dist"],
+        "options": {
+          "commands": ["nx run @solo-labs/ai-toolkit-nx-claude:bundle"],
+          "parallel": false
+        },
+        "dependsOn": [
+          {
+            "projects": ["@solo-labs/agents-agnostic"],
+            "target": "build"
+          },
+          {
+            "projects": ["@solo-labs/commands-agnostic"],
+            "target": "build"
+          }
+        ]
+      },
+      "postbuild": {
+        "executor": "nx:run-commands",
+        "options": {
+          "commands": [
+            "chmod +x packages/ai-toolkit-nx-claude/dist/cli-generator.cjs"
+          ],
+          "parallel": true
+        },
+        "dependsOn": ["build"]
+      }
+    }
+  },
+  "generators": "./generators.json",
+  "dependencies": {
+    "@nx/devkit": "*",
+    "enquirer": "*"
+  },
+  "devDependencies": {
+    "@solo-labs/commands-agnostic": "0.1.0",
+    "@solo-labs/agents-agnostic": "0.1.0"
+  }
+}

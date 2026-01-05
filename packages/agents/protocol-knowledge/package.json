@@ -1,0 +1,35 @@
+{
+  "name": "@solo-labs/protocol-knowledge",
+  "version": "0.1.0",
+  "description": "Embedded domain knowledge for AEGIS protocol agents",
+  "type": "module",
+  "private": false,
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./concepts/*": {
+      "import": "./src/concepts/*.md"
+    },
+    "./patterns/*": {
+      "import": "./src/patterns/*.md"
+    },
+    "./gotchas/*": {
+      "import": "./src/gotchas/*.md"
+    }
+  },
+  "files": [
+    "dist",
+    "src/**/*.md"
+  ],
+  "keywords": [
+    "aegis",
+    "protocol",
+    "knowledge",
+    "defi",
+    "uniswap-v4"
+  ],
+  "author": "Solo Labs",
+  "license": "MIT"
+}
